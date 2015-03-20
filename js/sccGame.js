@@ -18,7 +18,12 @@ var gameCanvas = document.getElementById("game");	// capture the canvas where th
 	// set the background transparency to true and use the CSS file to adjust
 var game = new Phaser.Game(600, 600, Phaser.AUTO, gameCanvas,{ preload: preload, create: create, render : render, update:update }, true);
 
-                           
+var sprite;
+
+var upKey;
+var downKey;
+var leftKey;
+var rightKey;
 	/** 
 	 * preload()
 	 * This function is tied to the preload game state in the Phaser framework.
@@ -29,7 +34,9 @@ function preload() {
     // load all game assets here
      
   	// load the example pickle image and tie it to the 'mainPC' key
-  game.load.image('mainPC', '../images/pickle.png');
+  //game.load.image('mainPC', '../images/pickle.png');
+  game.load.spritesheet('sprite', '../images/drathaxSpriteSheet.png', 50, 60, 4);
+  
 
 } 
 
@@ -44,8 +51,15 @@ function create() {
   		 
   		// add the mainPC key as a sprite in the center of the game board
   		// anchor the sprite to the middle of the insertion point 0.5, 0.5
-	var mainPC = game.add.sprite(game.world.centerX, game.world.centerY, 'mainPC'); 
-   mainPC.anchor.setTo(0.5, 0.5);
+  	sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'sprite');
+		//var mainPC = game.add.sprite(game.world.centerX, game.world.centerY, 'mainPC'); 
+   	//mainPC.anchor.setTo(0.5, 0.5);
+   sprite.animations.add('walk');
+   sprite.animations.play('walk', 5, true);
+  	upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+   downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+   leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+   rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 }
   
 	/**
@@ -54,6 +68,26 @@ function create() {
 	 * It is called at 60 times per second. All the redraw happens within this area.
 	 */
 function update() {
+  if(upKey.isDown)
+  {
+    sprite.y -= 2;
+  }
+  else if(downKey.isDown)
+  {
+    sprite.y += 2;
+  }
+
+  
+  else if(leftKey.isDown)
+  {
+    sprite.x -= 2;
+  }
+
+  else if(rightKey.isDown)
+  {
+    sprite.x += 2;
+  }
+
 
 }
   
